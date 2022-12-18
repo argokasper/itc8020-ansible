@@ -1,0 +1,85 @@
+---
+- name: Lab 03 - Configure Cisco routers
+  hosts: routers
+
+  tasks:
+    - name: Collect facts
+      ios_facts:
+        gather_subset:
+          - min
+          - config
+      register: facts
+
+    - name: Write facts into file
+      template:
+        src: device_info.j2
+        dest: "reports/{{ inventory_hostname }}.info"
+
+    - name: Backup config
+      become: true
+      ios_config:
+        backup: yes
+        backup_options:
+          dir_path: ios_backup
+          filename: "{{ hostname }}.backup"
+      changed_when: false
+
+    - name: Create new ACL for SSH access only from ansible server
+      become: true
+      ios_config:
+        before:
+          - no ip access-list extended 101
+        parents:
+          - ip access-list extended 101
+        lines: "{{ acl_lines }}"
+        after:
+          - interface loopback0
+          - ip access-group 101 in
+        replace: block
+        match: exact
+      when: "ansible_server in acl_lines[0]"
+      register: ios_changes
+
+    - debug:
+        msg: "Skipping ACL change because of possible ssh lock."
+      when: "ansible_server not in acl_lines[0]"
+
+    - name: Basic config
+      become: true
+      ios_config:
+        lines:
+          - hostname {{ hostname }}
+          - service password-encryption
+      register: basic_conf_changes
+
+    - name: Set system logging to remote server
+      become: true
+      ios_config:
+        lines:
+          - logging host {{ item }}
+          - logging trap debugging
+
+      loop: "{{ syslog_servers }}"
+
+    - name: Configure NTP servers
+      become: true
+      ios_config:
+        lines:
+          - ntp server {{ item }}
+      loop: "{{ ntp_servers }}"
+
+    - name: Show ACL changes
+      debug:
+        var: ios_changes.updates
+      when: ios_changes.changed
+
+    - name: Show basic changes
+      debug:
+        var: basic_conf_changes.updates
+      when: basic_conf_changes.changed
+
+    - name: Save config
+      become: true
+      ios_config:
+        save_when: always
+      when: ios_changes.changed and basic_conf_changes.changed
