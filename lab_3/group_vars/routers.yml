@@ -1,4 +1,4 @@
 acl_lines:
   # - deny ip any any
   - permit tcp host {{ ansible_server }} host {{ ansible_host }} eq 22
-  - deny   ip 10.0.0.0 0.0.0.255 any
+  # - deny   ip 10.0.0.0 0.0.0.255 any

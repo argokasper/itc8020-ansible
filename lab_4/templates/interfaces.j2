@@ -1,9 +1,5 @@
-
 {% for i in loopbacks %}
 interface Loopback{{ i | replace('lo', '') }}
     description {{ loopbacks[i].description | default('Description is missing') }}
-    {% if 'ospf_area' in loopbacks[i] %}
-        ip ospf 1 area {{ loopbacks[i].ospf_area }}
-    {% endif %}
-
+    ip address {{ loopbacks[i].ip }} 255.255.255.255
 {% endfor %}

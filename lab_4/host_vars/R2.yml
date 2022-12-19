@@ -1,19 +1,17 @@
 ---
-hostname: MyRouter1
+hostname: MyRouter2
 
 loopbacks:
   lo0:
     ip: 1.1.1.1
     description: Loopback 0
-    ospf_area: 1
     ospf_ip: 1.1.1.0
-    auth: true
+    ospf_area: 1
   lo1:
     ip: 2.2.2.2
     description: Loopback 1
     ospf_ip: 2.2.2.0
     ospf_area: 1
-    auth: true
   lo2:
     ip: 3.3.3.3
     description: Loopback 2
@@ -26,9 +24,11 @@ loopbacks:
     ip: 6.6.6.6
     ospf_ip: 6.6.6.0
     ospf_area: 2
+    auth: true
+
 
 interfaces:
   main:
-    ip: 192.168.56.102
+    ip: 192.168.0.36
     description: Loopback 0
     ospf_area: 0

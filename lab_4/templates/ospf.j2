@@ -1,0 +1,14 @@
+router ospf 1
+
+{% for i in loopbacks %}
+{% if 'ospf_area' in loopbacks[i] and 'ospf_ip' in loopbacks[i] %}
+ network {{ loopbacks[i].ospf_ip }} 0.0.255.255 area {{ loopbacks[i].ospf_area }}
+{% endif %}
+{% endfor %}
+
+{% for i in interfaces %}
+{% if 'ospf_area' in interfaces[i] and 'ospf_ip' in interfaces[i] %}
+ network {{ interfaces[i].ospf_ip }} 0.0.255.255 area {{ interfaces[i].ospf_area }}
+{% endif %}
+{% endfor %}
+
