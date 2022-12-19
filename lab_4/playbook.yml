@@ -1,0 +1,39 @@
+---
+- name: Lab 04 - Configure Cisco routers with templates
+  hosts: routers
+
+  tasks:
+
+    - name: Configure interfaces
+      become: yes
+      ios_config:
+        src: templates/interfaces.j2
+      register: int_config
+
+    # - name: Configure ospf
+    #   ios_config:
+    #     src: templates/ospf.j2
+    #   register: ospf_config
+
+    - name: Show OSPF routes
+      ios_command:
+        commands:
+          - show ip route ospf
+      register: ospf_routes
+
+    - name: Show OSPF neighbour IDs
+      ios_command:
+        commands:
+          - show ip ospf neighbor
+      register: ospf_neighbours
+
+    - name: Show interfaces config changes
+      debug:
+        var: int_config.updates
+      when: int_config.changed
+
+    # - name: Show ospf config changes
+    #   debug:
+    #     var: ospf_config.updates
+    #   when: ospf_config.changed
+

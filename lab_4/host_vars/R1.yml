@@ -1,0 +1,22 @@
+---
+hostname: MyRouter
+
+loopbacks:
+  lo0:
+    ip: 1.1.1.1/26
+    description: Loopback 0
+    ospf_area: 0
+  lo1:
+    ip: 2.2.2.2/26
+    description: Loopback 1
+    ospf_area: 1
+  lo2:
+    ip: 3.3.3.3/26
+    description: Loopback 2
+  lo3:
+    ip: 4.4.4.4/26
+  lo4:
+    ip: 5.5.5.5/26
+    description: Loopback 4
+  lo5:
+    ip: 6.6.6.6/26
