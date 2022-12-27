@@ -42,18 +42,14 @@
       debug:
         msg: "Count ospf routes: {{ ospf_routes.stdout[0] | regex_findall('(?:[0-9]{1,3}\\.){3}[0-9]{1,3}[,]') | count }}"
 
-    - name: Show interfaces config changes
-      debug:
-        var: ospf_neighbours
-
     - name: Parse Neighbours for IDs
       set_fact:
-        parse_neighbours: ospf_neighbours.stdout[0] | regex_findall(''[\\n]{1}(?:[0-9]{1,3}\\.){3}[0-9]{1,3}')
+        parse_neighbours: "{{ ospf_neighbours.stdout[0] | regex_findall('[\\n]{1}(?:[0-9]{1,3}\\.){3}[0-9]{1,3}') }}"
 
-    # - name: Neighbor IDs
-    #   debug:
-    #     msg: "Neighbour ID: {{ item.replace('\\n', '').replace('\n', '') }}"
-    #   loop: "{{ parse_neighbours | default [] }}"
+    - name: Neighbor IDs
+      debug:
+        msg: "Neighbour ID: {{ item.replace('\\n', '').replace('\n', '') }}"
+      loop: "{{ parse_neighbours }}"
 
     - name: Show interfaces config changes
       debug:

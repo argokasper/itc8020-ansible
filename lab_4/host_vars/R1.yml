@@ -30,5 +30,6 @@ loopbacks:
 interfaces:
   GigabitEthernet1:
     ip: 192.168.56.102
+    ospf_ip: 192.168.56.0
     description: GigabitEthernet 1
     ospf_area: 0
