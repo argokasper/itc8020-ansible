@@ -3,32 +3,32 @@ hostname: MyRouter2
 
 loopbacks:
   lo0:
-    ip: 1.1.1.1
+    ip: 10.0.0.1
     description: Loopback 0
-    ospf_ip: 1.1.1.0
+    ospf_ip: 10.0.0.0
     ospf_area: 1
   lo1:
-    ip: 2.2.2.2
+    ip: 10.1.0.1
     description: Loopback 1
-    ospf_ip: 2.2.2.0
+    ospf_ip: 10.1.0.0
     ospf_area: 1
   lo2:
-    ip: 3.3.3.3
+    ip: 10.2.0.1
     description: Loopback 2
   lo3:
-    ip: 4.4.4.4
+    ip: 10.3.0.1
   lo4:
-    ip: 5.5.5.5
+    ip: 10.4.0.1
     description: Loopback 4
   lo5:
-    ip: 6.6.6.6
-    ospf_ip: 6.6.6.0
+    ip: 10.5.0.1
+    ospf_ip: 10.5.0.0
     ospf_area: 2
     auth: true
 
 
 interfaces:
-  main:
+  GigabitEthernet1:
     ip: 192.168.0.36
-    description: Loopback 0
+    description: GigabitEthernet 1
     ospf_area: 0
